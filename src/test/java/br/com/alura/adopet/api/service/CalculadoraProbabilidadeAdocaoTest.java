@@ -17,8 +17,8 @@ class CalculadoraProbabilidadeAdocaoTest {
     @Test
     @DisplayName("Deveria retornar ALTA, pet com altas chances")
     void cenario01(){
-        //idade 4 e peso 4Kg - ALTA
 
+        // GIVEN (arrange) – preparar os dados
         Abrigo abrigo = new Abrigo(new CadastroAbrigoDto(
                 "Abrigo feliz",
                 "94999999999",
@@ -35,8 +35,11 @@ class CalculadoraProbabilidadeAdocaoTest {
         ), abrigo);
 
         CalculadoraProbabilidadeAdocao calculadora = new CalculadoraProbabilidadeAdocao();
+
+        // WHEN (act) – executar o método
         ProbabilidadeAdocao probabilidade = calculadora.calcular(pet);
 
+        // THEN (assert) – verificar o resultado
         Assertions.assertEquals(ProbabilidadeAdocao.ALTA, probabilidade);
     }
 }
