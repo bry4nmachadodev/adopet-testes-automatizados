@@ -16,7 +16,7 @@ class CalculadoraProbabilidadeAdocaoTest {
 
     @Test
     @DisplayName("Deveria retornar ALTA, pet com altas chances")
-    void cenario01(){
+    void deveriaRetornarProbabilidadeAltaParaPetComPesoBaixoEIdadeBaixa(){
 
         // GIVEN (arrange) – preparar os dados
         Abrigo abrigo = new Abrigo(new CadastroAbrigoDto(
@@ -45,7 +45,7 @@ class CalculadoraProbabilidadeAdocaoTest {
 
     @Test
     @DisplayName("Deveria retornar MÉDIA, pet com médias chances")
-    void cenario02(){
+    void deveriaRetornarProbabilidadeMediaParaPetComIdadeAltaEPesoBaixo(){
 
         // GIVEN (arrange) – preparar os dados
         Abrigo abrigo = new Abrigo(new CadastroAbrigoDto(
