@@ -15,8 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class CalculadoraProbabilidadeAdocaoTest {
 
     @Test
-    @DisplayName("Deveria retornar ALTA, pet com altas chances")
-    void deveriaRetornarProbabilidadeAltaParaPetComPesoBaixoEIdadeBaixa(){
+    @DisplayName("Probabilidade alta para gatos jovens com peso baixo")
+    void probabilidadeAltaCenario1(){
 
         // GIVEN (arrange) – preparar os dados
         Abrigo abrigo = new Abrigo(new CadastroAbrigoDto(
@@ -44,8 +44,8 @@ class CalculadoraProbabilidadeAdocaoTest {
     }
 
     @Test
-    @DisplayName("Deveria retornar MÉDIA, pet com médias chances")
-    void deveriaRetornarProbabilidadeMediaParaPetComIdadeAltaEPesoBaixo(){
+    @DisplayName("Probabilidade média para gatos idosos com peso baixo")
+    void probabilidadeMediaCenario1(){
 
         // GIVEN (arrange) – preparar os dados
         Abrigo abrigo = new Abrigo(new CadastroAbrigoDto(
