@@ -42,4 +42,33 @@ class CalculadoraProbabilidadeAdocaoTest {
         // THEN (assert) – verificar o resultado
         Assertions.assertEquals(ProbabilidadeAdocao.ALTA, probabilidade);
     }
+
+    @Test
+    @DisplayName("Deveria retornar MÉDIA, pet com médias chances")
+    void cenario02(){
+
+        // GIVEN (arrange) – preparar os dados
+        Abrigo abrigo = new Abrigo(new CadastroAbrigoDto(
+                "Abrigo feliz",
+                "94999999999",
+                "abrigofeliz@email.com.br"
+        ));
+
+        Pet pet = new Pet(new CadastroPetDto(
+                TipoPet.GATO,
+                "Miau",
+                "Siames",
+                15,
+                "Cinza",
+                4.0f
+        ), abrigo);
+
+        CalculadoraProbabilidadeAdocao calculadora = new CalculadoraProbabilidadeAdocao();
+
+        // WHEN (act) – executar o método
+        ProbabilidadeAdocao probabilidade = calculadora.calcular(pet);
+
+        // THEN (assert) – verificar o resultado
+        Assertions.assertEquals(ProbabilidadeAdocao.MEDIA, probabilidade);
+    }
 }
