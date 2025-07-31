@@ -42,4 +42,15 @@ class ValidacaoTutorComAdocaoEmAndamentoTest {
         //ASSERT + ACT
         Assertions.assertThrows(ValidacaoException.class, () -> validacao.validar(dto));
     }
+
+    @Test
+    @DisplayName("Deveria retornar TUTOR SEM adoção EM ANDAMENTO")
+    void cenario02(){
+        //ARRANGE
+        BDDMockito.given(dto.idTutor()).willReturn(1L);
+        BDDMockito.given(adocaoRepository.existsByTutorIdAndStatus(dto.idTutor(), StatusAdocao.AGUARDANDO_AVALIACAO)).willReturn(false);
+
+        //ASSERT + ACT
+        Assertions.assertDoesNotThrow(() -> validacao.validar(dto));
+    }
 }
