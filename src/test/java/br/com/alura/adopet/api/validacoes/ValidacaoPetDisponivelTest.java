@@ -1,6 +1,7 @@
 package br.com.alura.adopet.api.validacoes;
 
 import br.com.alura.adopet.api.dto.SolicitacaoAdocaoDto;
+import br.com.alura.adopet.api.exception.ValidacaoException;
 import br.com.alura.adopet.api.model.Pet;
 import br.com.alura.adopet.api.repository.PetRepository;
 import org.hibernate.validator.constraints.ModCheck;
@@ -35,15 +36,10 @@ class ValidacaoPetDisponivelTest {
     @DisplayName("Deveria Permitir A Solicitação De Adoção Do Pet")
     void cenario1(){
         //arrange
-        SolicitacaoAdocaoDto dto = new SolicitacaoAdocaoDto(
-                7l, 2l, "Motivo qualquer"
-        );
-
-        BDDMockito.given(petRepository.getReferenceById(id)).willReturn(pet);
-
+        BDDMockito.given(petRepository.getReferenceById(dto.idPet())).willReturn(pet);
+        BDDMockito.given(pet.getAdotado()).willReturn(false);
 
         //assert + act
         Assertions.assertDoesNotThrow(() -> validacao.validar(dto));
     }
-
 }
