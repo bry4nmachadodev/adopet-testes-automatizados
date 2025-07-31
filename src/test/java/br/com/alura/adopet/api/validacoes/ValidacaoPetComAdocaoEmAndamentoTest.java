@@ -20,17 +20,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class ValidacaoPetComAdocaoEmAndamentoTest {
-
-    @Mock
-    private PetRepository petRepository;
     @Mock
     private AdocaoRepository adocaoRepository;
 
     @InjectMocks
     private ValidacaoPetComAdocaoEmAndamento validacao;
-
-    @Mock
-    private Pet pet;
 
     @Mock
     private SolicitacaoAdocaoDto dto;
