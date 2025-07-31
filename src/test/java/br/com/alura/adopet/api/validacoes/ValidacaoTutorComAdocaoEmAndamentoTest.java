@@ -27,9 +27,6 @@ class ValidacaoTutorComAdocaoEmAndamentoTest {
     private AdocaoRepository adocaoRepository;
 
     @Mock
-    private TutorRepository tutorRepository;
-
-    @Mock
     private SolicitacaoAdocaoDto dto;
 
     @Test
