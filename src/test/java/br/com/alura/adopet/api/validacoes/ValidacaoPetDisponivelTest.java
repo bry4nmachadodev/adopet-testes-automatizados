@@ -40,6 +40,18 @@ class ValidacaoPetDisponivelTest {
         BDDMockito.given(pet.getAdotado()).willReturn(false);
 
         //assert + act
+        //assertDoesNotThrow -> que não vá lançar uma exeception
         Assertions.assertDoesNotThrow(() -> validacao.validar(dto));
+    }
+
+    @Test
+    @DisplayName("Deveria Não Permitir A Solicitação De Adoção Do Pet")
+    void cenario2(){
+        //arrange
+        BDDMockito.given(petRepository.getReferenceById(dto.idPet())).willReturn(pet);
+        BDDMockito.given(pet.getAdotado()).willReturn(true);
+
+        //assert + act
+        Assertions.assertThrows(ValidacaoException.class, () -> validacao.validar(dto));
     }
 }
