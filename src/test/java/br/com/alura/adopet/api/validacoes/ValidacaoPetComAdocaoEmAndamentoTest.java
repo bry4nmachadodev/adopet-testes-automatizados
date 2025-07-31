@@ -47,4 +47,17 @@ class ValidacaoPetComAdocaoEmAndamentoTest {
         //assert + act
         Assertions.assertThrows(ValidacaoException.class, () -> validacao.validar(dto));
     }
+
+    @Test
+    @DisplayName("Deveria passar e NÃO retornar uma exception")
+    void cenario02(){
+        //arrange
+        BDDMockito.given(dto.idPet()).willReturn(1L);
+        BDDMockito.given(adocaoRepository
+                        .existsByPetIdAndStatus(dto.idPet(), StatusAdocao.AGUARDANDO_AVALIACAO))
+                .willReturn(false);
+
+        //assert + act
+        Assertions.assertDoesNotThrow(() -> validacao.validar(dto));
+    }
 }
