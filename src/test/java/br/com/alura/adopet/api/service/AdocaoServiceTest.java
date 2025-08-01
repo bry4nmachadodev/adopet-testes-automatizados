@@ -64,7 +64,7 @@ class AdocaoServiceTest {
 
     @Test
     @DisplayName("Deveria SALVAR no banco")
-    void cenario01(){
+    void solicitar1Parte(){
         //ARRANGE
         this.dto = new SolicitacaoAdocaoDto(10l, 20l, "motivo qualquer");
         BDDMockito.given(petRepository.getReferenceById(dto.idPet())).willReturn(pet);
@@ -84,18 +84,21 @@ class AdocaoServiceTest {
 
     @Test
     @DisplayName("Lista de validações DEVE SER PERCORRIDA = validações devem ser chamados")
-    void cenario02(){
+    void solicitar2Parte(){
         //ARRANGE
         this.dto = new SolicitacaoAdocaoDto(10l, 20l, "motivo qualquer");
         BDDMockito.given(petRepository.getReferenceById(dto.idPet())).willReturn(pet);
         BDDMockito.given(tutorRepository.getReferenceById(dto.idTutor())).willReturn(tutor);
         BDDMockito.given(pet.getAbrigo()).willReturn(abrigo);
+        validacoes.add(validador1);
+        validacoes.add(validador2);
 
         //ACT
         service.solicitar(dto);
 
         //ASSERT
-
+        BDDMockito.then(validador1).should().validar(dto);
+        BDDMockito.then(validador2).should().validar(dto);
     }
 
 }
