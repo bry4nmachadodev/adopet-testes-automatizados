@@ -51,7 +51,6 @@ class AdocaoServiceTest {
     @Mock
     private Abrigo abrigo;
 
-    @Mock
     private SolicitacaoAdocaoDto dto;
 
     @Captor
@@ -60,15 +59,21 @@ class AdocaoServiceTest {
     @Test
     @DisplayName("Deveria SALVAR no banco")
     void cenario01(){
-
     //ARRANGE
+    this.dto = new SolicitacaoAdocaoDto(10l, 20l, "motivo qualquer");
+    BDDMockito.given(petRepository.getReferenceById(dto.idPet())).willReturn(pet);
+    BDDMockito.given(tutorRepository.getReferenceById(dto.idTutor())).willReturn(tutor);
+    BDDMockito.given(pet.getAbrigo()).willReturn(abrigo);
 
     //ACT
     service.solicitar(dto);
 
     //ASSERT
-    BDDMockito.then(repository).should().save(any());
-
+    BDDMockito.then(repository).should().save(adocaoCaptor.capture());
+    Adocao adocaoSalva = adocaoCaptor.getValue();
+    Assertions.assertEquals(pet, adocaoSalva.getPet());
+    Assertions.assertEquals(tutor, adocaoSalva.getTutor());
+    Assertions.assertEquals(dto.motivo(), adocaoSalva.getMotivo());
     }
 
 }
