@@ -1,5 +1,6 @@
 package br.com.alura.adopet.api.service;
 
+import br.com.alura.adopet.api.dto.AprovacaoAdocaoDto;
 import br.com.alura.adopet.api.dto.SolicitacaoAdocaoDto;
 import br.com.alura.adopet.api.model.Abrigo;
 import br.com.alura.adopet.api.model.Adocao;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +59,12 @@ class AdocaoServiceTest {
     @Mock
     private Abrigo abrigo;
 
+    @Mock
+    private Adocao adocao;
+
     private SolicitacaoAdocaoDto dto;
+
+    private AprovacaoAdocaoDto dtoAprovacao;
 
     @Captor
     private ArgumentCaptor<Adocao> adocaoCaptor;
@@ -99,6 +106,26 @@ class AdocaoServiceTest {
         //ASSERT
         BDDMockito.then(validador1).should().validar(dto);
         BDDMockito.then(validador2).should().validar(dto);
+    }
+
+
+    @Test
+    @DisplayName("Deveria marcar ADOÇÃO como APROVADA")
+    void aprovarSemEmail(){
+        //ARRANGE
+        this.dtoAprovacao = new AprovacaoAdocaoDto(123L);
+        BDDMockito.given(adocao.getPet()).willReturn(pet);
+        BDDMockito.given(pet.getAbrigo()).willReturn(abrigo);
+        BDDMockito.given(adocao.getTutor()).willReturn(tutor);
+        BDDMockito.given(adocao.getData()).willReturn(LocalDateTime.now());
+        BDDMockito.given(repository.getReferenceById(dtoAprovacao.idAdocao())).willReturn(adocao);
+
+
+        //ACT
+        service.aprovar(dtoAprovacao);
+
+        //ASSERT
+        BDDMockito.then(adocao).should().marcarComoAprovada();
     }
 
 }
