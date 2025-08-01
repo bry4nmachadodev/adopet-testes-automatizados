@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,7 +41,12 @@ class AdocaoServiceTest {
     private EmailService emailService;
 
     @Spy
-    private List<ValidacaoSolicitacaoAdocao> validacoes;
+    private List<ValidacaoSolicitacaoAdocao> validacoes = new ArrayList<>();
+
+    @Mock
+    private ValidacaoSolicitacaoAdocao validador1;
+    @Mock
+    private ValidacaoSolicitacaoAdocao validador2;
 
     @Mock
     private Pet pet;
