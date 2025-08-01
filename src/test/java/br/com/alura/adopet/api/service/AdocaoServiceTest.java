@@ -39,7 +39,7 @@ class AdocaoServiceTest {
     @Mock
     private EmailService emailService;
 
-    @Mock
+    @Spy
     private List<ValidacaoSolicitacaoAdocao> validacoes;
 
     @Mock
@@ -59,21 +59,37 @@ class AdocaoServiceTest {
     @Test
     @DisplayName("Deveria SALVAR no banco")
     void cenario01(){
-    //ARRANGE
-    this.dto = new SolicitacaoAdocaoDto(10l, 20l, "motivo qualquer");
-    BDDMockito.given(petRepository.getReferenceById(dto.idPet())).willReturn(pet);
-    BDDMockito.given(tutorRepository.getReferenceById(dto.idTutor())).willReturn(tutor);
-    BDDMockito.given(pet.getAbrigo()).willReturn(abrigo);
+        //ARRANGE
+        this.dto = new SolicitacaoAdocaoDto(10l, 20l, "motivo qualquer");
+        BDDMockito.given(petRepository.getReferenceById(dto.idPet())).willReturn(pet);
+        BDDMockito.given(tutorRepository.getReferenceById(dto.idTutor())).willReturn(tutor);
+        BDDMockito.given(pet.getAbrigo()).willReturn(abrigo);
 
-    //ACT
-    service.solicitar(dto);
+        //ACT
+        service.solicitar(dto);
 
-    //ASSERT
-    BDDMockito.then(repository).should().save(adocaoCaptor.capture());
-    Adocao adocaoSalva = adocaoCaptor.getValue();
-    Assertions.assertEquals(pet, adocaoSalva.getPet());
-    Assertions.assertEquals(tutor, adocaoSalva.getTutor());
-    Assertions.assertEquals(dto.motivo(), adocaoSalva.getMotivo());
+        //ASSERT
+        BDDMockito.then(repository).should().save(adocaoCaptor.capture());
+        Adocao adocaoSalva = adocaoCaptor.getValue();
+        Assertions.assertEquals(pet, adocaoSalva.getPet());
+        Assertions.assertEquals(tutor, adocaoSalva.getTutor());
+        Assertions.assertEquals(dto.motivo(), adocaoSalva.getMotivo());
+        }
+
+    @Test
+    @DisplayName("Lista de validações DEVE SER PERCORRIDA = validações devem ser chamados")
+    void cenario02(){
+        //ARRANGE
+        this.dto = new SolicitacaoAdocaoDto(10l, 20l, "motivo qualquer");
+        BDDMockito.given(petRepository.getReferenceById(dto.idPet())).willReturn(pet);
+        BDDMockito.given(tutorRepository.getReferenceById(dto.idTutor())).willReturn(tutor);
+        BDDMockito.given(pet.getAbrigo()).willReturn(abrigo);
+
+        //ACT
+        service.solicitar(dto);
+
+        //ASSERT
+
     }
 
 }
