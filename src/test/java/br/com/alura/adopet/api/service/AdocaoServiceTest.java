@@ -1,6 +1,7 @@
 package br.com.alura.adopet.api.service;
 
 import br.com.alura.adopet.api.dto.AprovacaoAdocaoDto;
+import br.com.alura.adopet.api.dto.ReprovacaoAdocaoDto;
 import br.com.alura.adopet.api.dto.SolicitacaoAdocaoDto;
 import br.com.alura.adopet.api.model.Abrigo;
 import br.com.alura.adopet.api.model.Adocao;
@@ -66,6 +67,8 @@ class AdocaoServiceTest {
 
     private AprovacaoAdocaoDto dtoAprovacao;
 
+    private ReprovacaoAdocaoDto dtoReprovacao;
+
     @Captor
     private ArgumentCaptor<Adocao> adocaoCaptor;
 
@@ -126,6 +129,25 @@ class AdocaoServiceTest {
 
         //ASSERT
         BDDMockito.then(adocao).should().marcarComoAprovada();
+    }
+
+    @Test
+    @DisplayName("Deveria marcar ADOÇÃO como REPROVADA *COM* justificativa")
+    void reprovarSemEmail(){
+        //ARRANGE
+        this.dtoReprovacao = new ReprovacaoAdocaoDto(123L,"motivo qualquer");
+        BDDMockito.given(adocao.getPet()).willReturn(pet);
+        BDDMockito.given(pet.getAbrigo()).willReturn(abrigo);
+        BDDMockito.given(adocao.getTutor()).willReturn(tutor);
+        BDDMockito.given(adocao.getData()).willReturn(LocalDateTime.now());
+        BDDMockito.given(repository.getReferenceById(dtoReprovacao.idAdocao())).willReturn(adocao);
+
+
+        //ACT
+        service.reprovar(dtoReprovacao);
+
+        //ASSERT
+        BDDMockito.then(adocao).should().marcarComoReprovada(dtoReprovacao.justificativa());
     }
 
 }
