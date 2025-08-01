@@ -47,6 +47,7 @@ class AdocaoServiceTest {
     @Mock
     private Abrigo abrigo;
 
+    @Mock
     private SolicitacaoAdocaoDto dto;
 
 
