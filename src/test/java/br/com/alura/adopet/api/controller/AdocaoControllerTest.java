@@ -43,4 +43,29 @@ class AdocaoControllerTest {
         //ASSERT -> pega o response e verifica seu status
         Assertions.assertEquals(400, response.getStatus());
     }
+
+    @Test
+    @DisplayName("deveria DEVOLVER código 200 para a solicitacao de ADOÇÃO SEM erros")
+    void cenario02() throws Exception {
+        //ARRANGE
+        String json = """
+                {
+                    "idPet": 1,
+                    "idTutor": 1,
+                    "motivo": "Motivo qualquer"
+                }
+                """;
+
+        //ACT -> onde é feita a requisição para o controller (usando o MOCK MVC)
+        var response = mvc.perform(
+                        post("/adocoes")
+                                .content(json)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andReturn().getResponse();
+
+        //ASSERT -> pega o response e verifica seu status
+        Assertions.assertEquals(200, response.getStatus());
+    }
+
 }
