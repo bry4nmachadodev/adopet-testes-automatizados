@@ -1,10 +1,13 @@
 package br.com.alura.adopet.api.controller;
 
+import br.com.alura.adopet.api.dto.SolicitacaoAdocaoDto;
 import br.com.alura.adopet.api.service.AdocaoService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
@@ -66,6 +70,36 @@ class AdocaoControllerTest {
 
         //ASSERT -> pega o response e verifica seu status
         Assertions.assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    @DisplayName("se o SERVICE entendeu os dados do dto")
+    void cenario03() throws Exception {
+        //ARRANGE
+        String json = """
+            {
+                "idPet": 1,
+                "idTutor": 1,
+                "motivo": "Motivo qualquer"
+            }
+            """;
+
+        //ACT
+        var response = mvc.perform(
+                        post("/adocoes")
+                                .content(json)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andReturn().getResponse();
+
+        //ASSERT -> uso do captor para ver se o service leu os dados corretamente
+        ArgumentCaptor<SolicitacaoAdocaoDto> captor = ArgumentCaptor.forClass(SolicitacaoAdocaoDto.class);
+        verify(service).solicitar(captor.capture());
+
+        var dtoCapturado = captor.getValue();
+        assertEquals(1L, dtoCapturado.idPet());
+        assertEquals(1L, dtoCapturado.idTutor());
+        assertEquals("Motivo qualquer", dtoCapturado.motivo());
     }
 
 }
