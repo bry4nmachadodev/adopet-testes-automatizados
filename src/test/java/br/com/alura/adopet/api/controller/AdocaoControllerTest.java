@@ -1,6 +1,7 @@
 package br.com.alura.adopet.api.controller;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -21,7 +22,8 @@ class AdocaoControllerTest {
     private MockMvc mvc;
 
     @Test
-    void deveriaDevolverCodigo400ParaSolicitacaoDeAdocaoComErros() throws Exception {
+    @DisplayName("deveria DEVOLVER código 400 para a solicitacao de ADOÇÃO com erros")
+    void cenario01() throws Exception {
         //ARRANGE
         String json = "{}";
 
