@@ -30,7 +30,7 @@ public class AbrigoService {
                 .toList();
     }
 
-    public void cadatrar(CadastroAbrigoDto dto) {
+    public void cadastrar(CadastroAbrigoDto dto) {
         boolean jaCadastrado = abrigoRepository.existsByNomeOrTelefoneOrEmail(dto.nome(), dto.telefone(), dto.email());
 
         if (jaCadastrado) {
