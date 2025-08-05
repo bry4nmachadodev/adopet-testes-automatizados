@@ -131,4 +131,15 @@ class AbrigoServiceTest {
         //ASSERT
         Assertions.assertEquals(listaDePetsMock.size(), resultado.size());
     }
+
+    @Test
+    @DisplayName("deve lançar ValidacaoException quando abrigo não for encontrado")
+    void cenario02ListarPetsAbrigoNaoEncontrado() {
+        Mockito.doThrow(new ValidacaoException("Abrigo não encontrado"))
+                .when(service)
+                .carregarAbrigo("999");
+
+        Assertions.assertThrows(ValidacaoException.class, () -> service.listarPetsDoAbrigo("999"));
+    }
+
 }
