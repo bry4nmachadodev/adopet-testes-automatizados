@@ -33,7 +33,13 @@ class AbrigoServiceTest {
     void cenario01(){
         //ARRANGE
         this.cadastroDto = new CadastroAbrigoDto("Casinha Feliz", "1134567890", "casinhafeliz@teste.com");
-        BDDMockito.given(abrigoRepository.existsByNomeOrTelefoneOrEmail(cadastroDto.nome(), cadastroDto.telefone(), cadastroDto.email())).willReturn(true);
+        BDDMockito.given(
+                abrigoRepository.existsByNomeOrTelefoneOrEmail(
+                        cadastroDto.nome(),
+                        cadastroDto.telefone(),
+                        cadastroDto.email())
+                )
+        .willReturn(true);
 
         //ASSERT + ACT
         assertThrows(ValidacaoException.class, () -> service.cadastrar(cadastroDto));
