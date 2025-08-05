@@ -1,9 +1,10 @@
 package br.com.alura.adopet.api.service;
 
 import br.com.alura.adopet.api.dto.CadastroAbrigoDto;
+import br.com.alura.adopet.api.dto.PetDto;
 import br.com.alura.adopet.api.exception.ValidacaoException;
 import br.com.alura.adopet.api.model.Abrigo;
-import br.com.alura.adopet.api.model.Adocao;
+import br.com.alura.adopet.api.model.Pet;
 import br.com.alura.adopet.api.repository.AbrigoRepository;
 import br.com.alura.adopet.api.repository.PetRepository;
 import org.junit.jupiter.api.Assertions;
@@ -13,6 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class AbrigoServiceTest {
 
+    @Spy
     @InjectMocks
     private AbrigoService service;
 
@@ -28,6 +32,9 @@ class AbrigoServiceTest {
 
     @Mock
     private PetRepository petRepository;
+
+    @Mock
+    private Pet pet;
 
     @Mock
     private Abrigo abrigo;
@@ -105,5 +112,23 @@ class AbrigoServiceTest {
         Assertions.assertThrows(ValidacaoException.class, () -> {
             service.carregarAbrigo("99");
         });
+    }
+
+    @Test
+    @DisplayName("deve listar pets do abrigo a partir do ID ou nome")
+    void cenario01ListarPetsDoAbrigo(){
+        //ARRANGE
+        Abrigo abrigo = Mockito.mock(Abrigo.class);
+        List<Pet> listaDePetsMock = new ArrayList<>();
+        listaDePetsMock.add(Mockito.mock(Pet.class));
+        listaDePetsMock.add(Mockito.mock(Pet.class));
+        BDDMockito.doReturn(abrigo).when(service).carregarAbrigo("123");
+        BDDMockito.when(petRepository.findByAbrigo(abrigo)).thenReturn(listaDePetsMock);
+
+        //ACT
+        List<PetDto> resultado = service.listarPetsDoAbrigo("123");
+
+        //ASSERT
+        Assertions.assertEquals(listaDePetsMock.size(), resultado.size());
     }
 }
