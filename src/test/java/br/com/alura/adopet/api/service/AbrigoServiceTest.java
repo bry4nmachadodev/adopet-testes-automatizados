@@ -80,7 +80,7 @@ class AbrigoServiceTest {
     }
 
     @Test
-    @DisplayName("carregarAbrigo deve buscar por ID quando entrada for número")
+    @DisplayName(" carregarAbrigo deve buscar por ID quando entrada for número")
     void cenario01CarregarAbrigo() {
         //ARRANGE
         Abrigo abrigoEsperado = Mockito.mock(Abrigo.class);
@@ -92,5 +92,18 @@ class AbrigoServiceTest {
 
         //ASSERT
         Assertions.assertEquals(abrigoEsperado, resultado);
+    }
+
+    @Test
+    @DisplayName("carregarAbrigo deve lançar exceção se o ID não for encontrado")
+    void cenario02CarregarAbrigo() {
+        // Arrange
+        Long id = 99L;
+        BDDMockito.given(abrigoRepository.findById(id)).willReturn(Optional.empty());
+
+        // Act + Assert
+        Assertions.assertThrows(ValidacaoException.class, () -> {
+            service.carregarAbrigo("99");
+        });
     }
 }
