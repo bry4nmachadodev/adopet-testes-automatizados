@@ -13,6 +13,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -75,5 +77,20 @@ class AbrigoServiceTest {
         Assertions.assertEquals(dto.nome(), abrigoSalvo.getNome());
         Assertions.assertEquals(dto.telefone(), abrigoSalvo.getTelefone());
         Assertions.assertEquals(dto.email(), abrigoSalvo.getEmail());
+    }
+
+    @Test
+    @DisplayName("carregarAbrigo deve buscar por ID quando entrada for número")
+    void cenario01CarregarAbrigo() {
+        //ARRANGE
+        Abrigo abrigoEsperado = Mockito.mock(Abrigo.class);
+        Long id = 13L;
+        BDDMockito.given(abrigoRepository.findById(id)).willReturn(Optional.of(abrigoEsperado));
+
+        //ACT
+        Abrigo resultado = service.carregarAbrigo("13");
+
+        //ASSERT
+        Assertions.assertEquals(abrigoEsperado, resultado);
     }
 }
