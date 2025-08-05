@@ -2,14 +2,15 @@ package br.com.alura.adopet.api.service;
 
 import br.com.alura.adopet.api.dto.CadastroAbrigoDto;
 import br.com.alura.adopet.api.exception.ValidacaoException;
+import br.com.alura.adopet.api.model.Abrigo;
+import br.com.alura.adopet.api.model.Adocao;
 import br.com.alura.adopet.api.repository.AbrigoRepository;
 import br.com.alura.adopet.api.repository.PetRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,7 +27,13 @@ class AbrigoServiceTest {
     @Mock
     private PetRepository petRepository;
 
+    @Mock
+    private Abrigo abrigo;
+
     private CadastroAbrigoDto cadastroDto;
+
+    @Captor
+    private ArgumentCaptor<Abrigo> abrigoCaptor;
 
     @Test
     @DisplayName("deve dar ValidacaoException devido a DADOS JÁ CADASTRADOS")
@@ -49,10 +56,24 @@ class AbrigoServiceTest {
     @DisplayName("deve SALVAR no banco")
     void cenario02(){
         //ARRANGE
+        CadastroAbrigoDto dto = new CadastroAbrigoDto("Casinha Feliz", "1134567890", "casinhafeliz@teste.com");
+        BDDMockito.given(
+                        abrigoRepository.existsByNomeOrTelefoneOrEmail(
+                                dto.nome(),
+                                dto.telefone(),
+                                dto.email())
+                )
+                .willReturn(false);
 
         //ACT
+        service.cadastrar(dto);
 
         //ASSERT
+        BDDMockito.then(abrigoRepository).should().save(abrigoCaptor.capture());
+        Abrigo abrigoSalvo = abrigoCaptor.getValue();
 
+        Assertions.assertEquals(dto.nome(), abrigoSalvo.getNome());
+        Assertions.assertEquals(dto.telefone(), abrigoSalvo.getTelefone());
+        Assertions.assertEquals(dto.email(), abrigoSalvo.getEmail());
     }
 }
