@@ -59,4 +59,10 @@ class TutorServiceTest {
         //ASSERT + ACT
         Assertions.assertThrows(ValidacaoException.class, () -> service.cadastrar(tutorCriado));
     }
+
+    @Test
+    @DisplayName("Atualiza os dados e verifica se realmente mudou")
+    void cenario01Atualizar(){
+
+    }
 }
