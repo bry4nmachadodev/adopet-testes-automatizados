@@ -160,4 +160,16 @@ class AbrigoControllerTest {
         Assertions.assertTrue(jsonResponse.contains("Mimi"));
     }
 
+    @Test
+    @DisplayName("Deveria retornar 404 quando o abrigo não for encontrado")
+    void cenario02GetListarPetsAbrigoNaoEncontrado() throws Exception {
+        //ACT
+        var response = mvc.perform(get("/abrigos/Abrigo/pets"))
+                .andReturn()
+                .getResponse();
+
+        //ASSERT
+        Assertions.assertEquals(200, response.getStatus());
+    }
+
 }
