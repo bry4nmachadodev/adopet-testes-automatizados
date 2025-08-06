@@ -47,4 +47,10 @@ class TutorServiceTest {
         Assertions.assertEquals(tutorCriado.telefone(), tutorSalvo.getTelefone());
         Assertions.assertEquals(tutorCriado.email(), tutorSalvo.getEmail());
     }
+
+    @Test
+    @DisplayName("Cadastro FALHA devido a EXCEÇÃO (ValidacaoException)")
+    void cenario02(){
+
+    }
 }
