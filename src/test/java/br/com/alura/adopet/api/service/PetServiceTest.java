@@ -2,6 +2,7 @@ package br.com.alura.adopet.api.service;
 
 import br.com.alura.adopet.api.dto.CadastroAbrigoDto;
 import br.com.alura.adopet.api.dto.CadastroPetDto;
+import br.com.alura.adopet.api.dto.PetDto;
 import br.com.alura.adopet.api.model.Abrigo;
 import br.com.alura.adopet.api.model.Pet;
 import br.com.alura.adopet.api.model.TipoPet;
@@ -13,7 +14,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.never;
 
 @ExtendWith(MockitoExtension.class)
 class PetServiceTest {
@@ -27,7 +31,9 @@ class PetServiceTest {
     @Mock
     private Abrigo abrigo;
 
-    private CadastroPetDto petDto;
+    private PetDto petDto;
+
+    private CadastroPetDto cadastroPetDto;
 
     private CadastroAbrigoDto abrigoDto;
 
@@ -67,4 +73,38 @@ class PetServiceTest {
                 () -> Assertions.assertEquals(abrigo1, petCadastrado.getAbrigo())
         );
     }
+
+    @Test
+    @DisplayName("Buscar pets disponíveis retorna lista correta")
+    void cenario01Listar(){
+        //ARRANGE
+        CadastroAbrigoDto abrigoFake = new CadastroAbrigoDto("Abrigo Teste", "11999999999", "teste@abrigo.com");
+        Abrigo abrigo1 = new Abrigo(abrigoFake);
+
+        CadastroPetDto petDto1 = new CadastroPetDto(TipoPet.CACHORRO, "Rex", "Labrador", 3, "Marrom", 25.0f);
+        CadastroPetDto petDto2 = new CadastroPetDto(TipoPet.GATO, "Mimi", "Siamês", 2, "Branco", 5.0f);
+
+        Pet pet1 = new Pet(petDto1, abrigo1);
+        Pet pet2 = new Pet(petDto2, abrigo1);
+
+        List<Pet> petsFake = List.of(pet1, pet2);
+
+        BDDMockito.given(petRepository.findAllByAdotadoFalse()).willReturn(petsFake);
+
+        //ACT
+        List<PetDto> resultado = service.buscarPetsDisponiveis();
+
+        //ASSERT
+        Assertions.assertEquals(2, petsFake.size());
+        Assertions.assertEquals("Rex", resultado.get(0).nome());
+        Assertions.assertEquals("Labrador", resultado.get(0).raca());
+        Assertions.assertEquals(TipoPet.CACHORRO, resultado.get(0).tipo());
+        Assertions.assertEquals(3, resultado.get(0).idade());
+
+        Assertions.assertEquals("Mimi", resultado.get(1).nome());
+        Assertions.assertEquals("Siamês", resultado.get(1).raca());
+        Assertions.assertEquals(TipoPet.GATO, resultado.get(1).tipo());
+        Assertions.assertEquals(2, resultado.get(1).idade());
+    }
+
 }
