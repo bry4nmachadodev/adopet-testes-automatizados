@@ -59,4 +59,29 @@ class AbrigoControllerTest {
         //ASSERT -> pega o response e verifica seu status
         Assertions.assertEquals(400, response.getStatus());
     }
+
+    @Test
+    @DisplayName("Devolve 200 devido ao json VÁLIDO")
+    void cenario02Post() throws Exception {
+        //ARRANGE
+        String json = """
+            {
+          "nome": "Abrigo Feliz",
+          "telefone": "(12)91234-5678",
+          "email": "contato@abrigofeliz.com"
+            }
+            """;
+
+
+        //ACT -> onde é feita a requisição para o controller (usando o MOCK MVC)
+        var response = mvc.perform(
+                        post("/abrigos")
+                                .content(json)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andReturn().getResponse();
+
+        //ASSERT -> pega o response e verifica seu status
+        Assertions.assertEquals(200, response.getStatus());
+    }
 }
