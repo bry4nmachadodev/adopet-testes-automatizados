@@ -46,6 +46,5 @@ class TutorServiceTest {
         Assertions.assertEquals(tutorCriado.nome(), tutorSalvo.getNome());
         Assertions.assertEquals(tutorCriado.telefone(), tutorSalvo.getTelefone());
         Assertions.assertEquals(tutorCriado.email(), tutorSalvo.getEmail());
-
     }
 }
