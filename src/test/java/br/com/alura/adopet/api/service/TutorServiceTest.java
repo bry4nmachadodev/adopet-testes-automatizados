@@ -13,6 +13,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -63,6 +65,20 @@ class TutorServiceTest {
     @Test
     @DisplayName("Atualiza os dados e verifica se realmente mudou")
     void cenario01Atualizar(){
+        //ARRANGE
+        CadastroTutorDto tutorCriado = new CadastroTutorDto("Bryan", "22997071492", "teste@teste.com");
+        Tutor tutor1 = new Tutor(tutorCriado);
+        BDDMockito.given(tutorRepository.getReferenceById(99L)).willReturn(tutor1);
 
+        AtualizacaoTutorDto atualizacaoTutor1 = new AtualizacaoTutorDto(99L, "Bryan", "22999999999", "modificado@teste.com");
+
+        //ACT
+        service.atualizar(atualizacaoTutor1);
+
+
+        //ASSERT
+        Assertions.assertEquals(atualizacaoTutor1.nome(), tutor1.getNome());
+        Assertions.assertEquals(atualizacaoTutor1.telefone(), tutor1.getTelefone());
+        Assertions.assertEquals(atualizacaoTutor1.email(), tutor1.getEmail());
     }
 }
