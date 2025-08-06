@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,7 +31,7 @@ class AbrigoControllerTest {
 
     @Test
     @DisplayName("deveria DEVOLVER código 200 para o GET -> LISTA DE ABRIGOS (DEVIDO AO JSON INVÁLIDO")
-    void cenario01() throws Exception {
+    void cenario01Get() throws Exception {
         //ACT
         var response = mvc.perform(
                         get("/abrigos")
@@ -39,5 +40,23 @@ class AbrigoControllerTest {
 
         //ASSERT
         Assertions.assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Devolve 400 devido ao json inválido")
+    void cenario01Post() throws Exception {
+        //ARRANGE
+        String json = "{}";
+
+        //ACT -> onde é feita a requisição para o controller (usando o MOCK MVC)
+        var response = mvc.perform(
+                        post("/abrigos")
+                                .content(json)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andReturn().getResponse();
+
+        //ASSERT -> pega o response e verifica seu status
+        Assertions.assertEquals(400, response.getStatus());
     }
 }
