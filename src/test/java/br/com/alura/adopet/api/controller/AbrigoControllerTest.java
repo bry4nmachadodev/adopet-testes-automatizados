@@ -13,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -172,4 +173,34 @@ class AbrigoControllerTest {
         Assertions.assertEquals(200, response.getStatus());
     }
 
+    @Test
+    @DisplayName("Deveria retornar 200 - JSON CORRETO")
+    void cenario01PostCadastroPet() throws Exception {
+        //ARRANGE
+        String json = """
+                {
+                  "tipo": "CACHORRO",
+                  "nome": "Rex",
+                  "raca": "Vira-lata",
+                  "idade": 3,
+                  "cor": "Marrom",
+                  "peso": 12.5
+                }
+                """;
+
+        Abrigo abrigoMock = new Abrigo(new CadastroAbrigoDto("AbrigoTeste", "11999999999", "teste@abrigo.com"));
+        BDDMockito.given(abrigoService.carregarAbrigo("AbrigoTeste")).willReturn(abrigoMock);
+        BDDMockito.doNothing().when(petService).cadastrarPet(Mockito.any(Abrigo.class), Mockito.any(CadastroPetDto.class));
+
+        //ACT -> onde é feita a requisição para o controller (usando o MOCK MVC)
+        var response = mvc.perform(
+                        post("/abrigos/AbrigoTeste/pets")
+                                .content(json)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andReturn().getResponse();
+
+        //ASSERT -> pega o response e verifica seu status
+        Assertions.assertEquals(200, response.getStatus());
+    }
 }
