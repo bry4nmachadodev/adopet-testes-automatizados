@@ -75,7 +75,6 @@ class TutorServiceTest {
         //ACT
         service.atualizar(atualizacaoTutor1);
 
-
         //ASSERT
         Assertions.assertEquals(atualizacaoTutor1.nome(), tutor1.getNome());
         Assertions.assertEquals(atualizacaoTutor1.telefone(), tutor1.getTelefone());
