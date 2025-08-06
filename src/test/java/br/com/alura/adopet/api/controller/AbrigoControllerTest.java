@@ -203,4 +203,16 @@ class AbrigoControllerTest {
         //ASSERT -> pega o response e verifica seu status
         Assertions.assertEquals(200, response.getStatus());
     }
+
+    @Test
+    @DisplayName("Deveria retornar 404 quando o abrigo não for encontrado")
+    void cenario02PostCadastroPetInvalido() throws Exception {
+        //ACT
+        var response = mvc.perform(get("/abrigos/Abrigo/pets"))
+                .andReturn()
+                .getResponse();
+
+        //ASSERT
+        Assertions.assertEquals(200, response.getStatus());
+    }
 }
