@@ -31,7 +31,7 @@ class AbrigoControllerTest {
 
     @Test
     @DisplayName("deveria DEVOLVER código 200 para o GET -> LISTA DE ABRIGOS (DEVIDO AO JSON INVÁLIDO")
-    void cenario01Get() throws Exception {
+    void cenario01GetListarAbrigo() throws Exception {
         //ACT
         var response = mvc.perform(
                         get("/abrigos")
@@ -108,4 +108,11 @@ class AbrigoControllerTest {
         //ASSERT -> pega o response e verifica seu status
         Assertions.assertEquals(400, response.getStatus());
     }
+
+    @Test
+    @DisplayName("")
+    void cenario01GetListarPets(){
+
+    }
+
 }
