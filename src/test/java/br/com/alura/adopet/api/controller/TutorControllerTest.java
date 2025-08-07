@@ -50,4 +50,24 @@ class TutorControllerTest {
         //ASSERT
         Assertions.assertEquals(200, response.getStatus());
     }
+
+    @Test
+    @DisplayName("Dever retornar 400 ( CADASTRO NÃO REALIZADO COM SUCESSO )")
+    void cenario02() throws Exception {
+        //ARRANGE
+        String json = "{\n" +
+                "  \"telefone\": \"22997071492\",\n" +
+                "  \"email\": \"teste@teste.com\"\n" +
+                "}\n"
+                ;
+        //ACT
+        var response = mvc.perform(
+                post("/tutores")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andReturn().getResponse();
+
+        //ASSERT
+        Assertions.assertEquals(400, response.getStatus());
+    }
 }
