@@ -2,6 +2,7 @@ package br.com.alura.adopet.api.controller;
 
 import br.com.alura.adopet.api.dto.AtualizacaoTutorDto;
 import br.com.alura.adopet.api.dto.CadastroTutorDto;
+import br.com.alura.adopet.api.exception.ValidacaoException;
 import br.com.alura.adopet.api.model.Tutor;
 import br.com.alura.adopet.api.repository.TutorRepository;
 import br.com.alura.adopet.api.service.TutorService;
@@ -99,5 +100,31 @@ class TutorControllerTest {
 
         //ASSERT
         Assertions.assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Deve retornar 400 se ocorrer ValidacaoException ao atualizar")
+    void cenario02AtualizarComErro() throws Exception {
+        String json = """
+            {
+              "id": 99,
+              "nome": "Bryan",
+              "telefone": "88888888888",
+              "email": "modificado@teste.com"
+            }
+            """;
+
+        // Simula o lançamento da exception no service
+        BDDMockito.willThrow(new ValidacaoException("Tutor não encontrado"))
+                .given(service).atualizar(Mockito.any());
+
+        var response = mvc.perform(
+                put("/tutores")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andReturn().getResponse();
+
+        Assertions.assertEquals(400, response.getStatus());
+        Assertions.assertEquals("Tutor não encontrado", response.getContentAsString());
     }
 }
