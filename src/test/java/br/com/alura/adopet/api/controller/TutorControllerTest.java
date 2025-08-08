@@ -3,8 +3,6 @@ package br.com.alura.adopet.api.controller;
 import br.com.alura.adopet.api.dto.AtualizacaoTutorDto;
 import br.com.alura.adopet.api.dto.CadastroTutorDto;
 import br.com.alura.adopet.api.exception.ValidacaoException;
-import br.com.alura.adopet.api.model.Tutor;
-import br.com.alura.adopet.api.repository.TutorRepository;
 import br.com.alura.adopet.api.service.TutorService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
